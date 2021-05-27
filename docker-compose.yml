@@ -1,0 +1,35 @@
+version: '2.1'
+
+services:
+    mysql:
+        platform: linux/x86_64
+        image: mysql:5.7
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+        ports:
+            - '3306:3306'
+        environment:  # on deploy, you should modify
+            MYSQL_DATABASE: 'djangodocker_db'
+            MYSQL_ROOT_PASSWORD: 'root'
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+    backend:
+        build: ./backend
+        working_dir: /backend
+        restart: on-failure
+        command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000" # gunicorn project.wsgi:application --bind 0.0.0.0:8000
+        volumes:
+            - ./backend:/backend # maps host diretory to internal container directory
+        depends_on:
+            mysql:
+                condition: service_healthy
+    nginx:
+        image: nginx:latest
+        ports:
+            - "80:80"
+        volumes:
+            - .:/code
+            - ./nginx:/etc/nginx/conf.d
+        depends_on:
+            - backend
