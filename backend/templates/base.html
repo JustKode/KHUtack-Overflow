@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.ico">
+    <link rel="stylesheet" href="/static/css/default.css">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <div class="base_header_container">
+        <div class="base_first_container">
+            <span class="base_logo">KHUtack Overflow</span>
+            <div class="base_login_container">
+                {% if request.user.is_authenticated %}
+                    <span>
+                        환영합니다! {{ request.user.first_name }}{{ request.user.last_name }}
+                        <a>로그아웃</a>
+                    </span>
+                {% else %}
+                    <span>
+                        <a>로그인</a>
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
