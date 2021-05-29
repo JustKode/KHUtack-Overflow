@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
+    {% endblock %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/css/default.css">
-    {% block head %}
-    {% endblock %}
+    <link rel="stylesheet" href="/static/css/layout.css">
 </head>
 <body>
     <div class="base_header_container">
         <div class="base_first_container">
             <span class="base_logo">KHUtack Overflow</span>
-            <div class="base_login_container">
+            <span class="base_login_wrapper">
                 {% if request.user.is_authenticated %}
                     <span>
-                        환영합니다! {{ request.user.first_name }}{{ request.user.last_name }}
+                        환영합니다! {{ request.user.name }}님!
                         <a>로그아웃</a>
                     </span>
                 {% else %}
@@ -24,10 +25,18 @@
                         <a>로그인</a>
                     </span>
                 {% endif %}
-            </div>
+            </span>
         </div>
+    </div>
+    <div class="air">
+        
     </div>
     {% block content %}
     {% endblock %}
+    <div class="base_bottom_container">
+        <div class="base_bottom_center_container">
+            Made by Justkode.
+        </div>
+    </div>
 </body>
 </html>

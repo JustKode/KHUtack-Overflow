@@ -1,0 +1,32 @@
+@keyframes fadein {
+    from {
+        opacity: 0%;
+    } to {
+        opacity: 100%;
+    }
+}
+
+div.index_banner_container {
+    text-align: center;
+    height: 320px;
+    padding: 100px;
+}
+
+div.index_banner_first {
+    font-size: 32px;
+    font-weight: lighter;
+    animation-duration: 0.8s;
+    animation-name: fadein;
+    animation-iteration-count: initial;   
+    animation-fill-mode: backwards; 
+}
+
+div.index_banner_second {
+    font-size: 36px;
+    font-weight: bold;
+    animation-delay: 0.8s;
+    animation-duration: 0.8s;
+    animation-name: fadein;
+    animation-iteration-count: initial;
+    animation-fill-mode: backwards; 
+}
