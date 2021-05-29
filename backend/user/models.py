@@ -98,7 +98,7 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['name', 'student_id', 'birth', 'email', 'phone']
 
     def __str__(self):
-        return self.admission_year + ' ' + self.name
+        return self.student_id[2:4] + ' ' + self.name
 
     def has_perm(self, perm, obj=None):
         return True

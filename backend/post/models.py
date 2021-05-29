@@ -51,5 +51,8 @@ class Question(models.Model):
     comments = models.ManyToManyField(Comment)
     answers = models.ManyToManyField(Answer)
 
+    def get_comment_count(self):
+        return self.comments.all().count()
+
     def __str__(self):
         return '[' + str(self.category) + '] ' + self.title

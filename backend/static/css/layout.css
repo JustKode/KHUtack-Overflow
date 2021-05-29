@@ -16,7 +16,17 @@ div.sub_title_container {
 div.sub_title_container > span {
     margin-bottom: 8px;
     border-bottom: 3px solid black;
-    padding: 4px;
-    font-size: 18px;
+    padding: 4px 8px;
+    font-size: 24px;
     font-weight: lighter;
+}
+
+div.question_box_container { 
+
+}
+
+
+
+div.question_list_container {
+    padding: 20px 0;
 }
