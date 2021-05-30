@@ -47,9 +47,9 @@ class Question(models.Model):
     )
     published = models.DateTimeField(auto_now_add=True)
     recommend = models.IntegerField(default=0)
-    tags = models.ManyToManyField(Tag)
-    comments = models.ManyToManyField(Comment)
-    answers = models.ManyToManyField(Answer)
+    tags = models.ManyToManyField(Tag, blank=True)
+    comments = models.ManyToManyField(Comment, blank=True)
+    answers = models.ManyToManyField(Answer, blank=True)
 
     def get_comment_count(self):
         return self.comments.all().count()

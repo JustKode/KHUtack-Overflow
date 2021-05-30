@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Login - KHUtack Overflow</title>
+    <link rel="stylesheet" href="/static/css/auth.css">
+{% endblock%}
+
+{% block content %}
+    <div class="main_container">
+        <div class="sub_container">
+            <div class="banner_container">
+                <div class="banner_first">Login</div>
+                <div class="banner_second">{{ message }}</div>
+            </div>
+            <div class="sub_title_container">
+                <span>Login</span>
+            </div>
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="input_container">
+                    <div class="input_wrapper">
+                        <div class="input_name">아이디</div>
+                        <input type="text" placeholder="아이디를 입력해주세요." name="user_id">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">비밀번호</div>
+                        <input type="password" placeholder="비밀번호를 입력해주세요." name="password">
+                    </div>
+                    <div class="link_wrapper">
+                        아직 아이디가 없으신가요? <a href="{% url 'signup' %}">Sign up</a>
+                    </div>
+                    <div class="submit_wrapper">
+                        <input type="submit" value="로그인">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

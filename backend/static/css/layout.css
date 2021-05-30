@@ -11,6 +11,7 @@ div.sub_container {
 
 div.sub_title_container {
     text-align: center;
+    margin-bottom: 40px;
 }
 
 div.sub_title_container > span {
@@ -21,12 +22,60 @@ div.sub_title_container > span {
     font-weight: lighter;
 }
 
-div.question_box_container { 
-
+div.question_list_container {
+    margin-top: 20px;
+    border-bottom: 1px solid #bbbbbb;
 }
 
+div.question_box_container {
+    border-top: 1px solid #bbbbbb;
+    height: 80px;
+    padding: 12px 8px;
+    margin: 0 20px;
+}
 
+div.question_box_first {
+    height: 32px;
+}
 
-div.question_list_container {
-    padding: 20px 0;
+div.question_box_first > span.board {
+    border: 1px solid black;
+    border-radius: 12px;
+    padding: 6px 12px;
+    background-color: black;
+    color: white;
+    font-size: 16px;
+}
+
+div.question_box_first > span.title {
+    margin-left: 8px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+div.question_box_second {
+    padding: 4px;
+}
+
+div.question_box_second > span.icon_content {
+    color: #888888;
+    font-size: 12px;
+    margin-right: 30px;
+}
+
+div.question_box_second > span.icon_content > i {
+    padding-right: 4px;
+}
+
+div.banner_container {
+    padding: 20px;
+}
+
+div.banner_first {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+div.banner_second {
+    font-size: 18px;
 }

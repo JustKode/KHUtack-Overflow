@@ -89,7 +89,11 @@ class User(AbstractBaseUser):
     homepage = models.URLField(
         verbose_name='개인 블로그 주소',
         max_length=200,
-        default='http://ce.khu.ac.kr/'
+        default='null'
+    )
+    points = models.IntegerField(
+        verbose_name="포인트",
+        default=0
     )
 
     objects = UserManager()
@@ -99,6 +103,12 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.student_id[2:4] + ' ' + self.name
+
+    def get_exp(self):
+        return self.points % 100
+    
+    def get_level(self):
+        return self.points // 100
 
     def has_perm(self, perm, obj=None):
         return True

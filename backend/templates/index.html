@@ -23,11 +23,18 @@
                     {% for question in questions %}
                     <div class="question_box_container">
                         <div class="question_box_first">
-                            <span class="board">{{ question.board }}</span>
+                            <span class="board">{{ question.category }}</span>
                             <span class="title">{{ question.title }}</span>
                         </div>
                         <div class="question_box_second">
-                            
+                            <span class="icon_content">
+                                <i class="fas fa-calendar"></i>
+                                {{ question.published }}
+                            </span>
+                            <span class="icon_content">
+                                <i class="fas fa-user"></i>
+                                {{ question.writer }}
+                            </span>
                         </div>
                     </div>
                 {% endfor %}

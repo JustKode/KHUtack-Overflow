@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Login - KHUtack Overflow</title>
+    <link rel="stylesheet" href="/static/css/auth.css">
+{% endblock%}
+
+{% block content %}
+    <div class="main_container">
+        <div class="sub_container">
+            <div class="banner_container">
+                <div class="banner_first">Sign up</div>
+                <div class="banner_second">{{ message }}</div>
+            </div>
+            <div class="sub_title_container">
+                <span>Sign up</span>
+            </div>
+            <form action="{% url 'signup' %}" method="post">
+                {% csrf_token %}
+                <div class="input_container">
+                    <div class="input_wrapper">
+                        <div class="input_name">아이디</div>
+                        <input type="text" placeholder="아이디를 입력해주세요. (5 ~ 20자)" name="user_id">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">비밀번호</div>
+                        <input type="password" placeholder="비밀번호를 입력해주세요. (6 ~ 20자)" name="password">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">비밀번호 확인</div>
+                        <input type="password" placeholder="비밀번호를 입력해주세요." name="password_2">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">이름</div>
+                        <input type="text" placeholder="이름을 입력해주세요." name="name">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">학번</div>
+                        <input type="text" placeholder="학번을 입력해주세요." name="student_id">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">생년월일</div>
+                        <input type="date" placeholder="생년월일을 입력해주세요." name="birth">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">이메일</div>
+                        <input type="email" placeholder="이메일을 입력해주세요." name="email">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">전화번호</div>
+                        <input type="tel" placeholder="전화번호를 입력해주세요." name="phone">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">Github</div>
+                        <input type="url" placeholder="Github를 입력해주세요." name="github">
+                    </div>
+                    <div class="input_wrapper">
+                        <div class="input_name">홈페이지</div>
+                        <input type="url" placeholder="홈페이지를 입력해주세요." name="homepage">
+                    </div>
+                    <div class="submit_wrapper">
+                        <input type="submit" value="회원 가입">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
