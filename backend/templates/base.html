@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +7,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'plugins/css/bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/css/default.css">
     <link rel="stylesheet" href="/static/css/layout.css">
 </head>
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{% if message.tags == 'error' %}background_red{% elif message.tags == 'success' %}background_green{% endif %} message_box">
+                <div class="message_content">
+                    {% if message.tags == 'info' %}
+                        <i class="fas fa-info-circle"></i>
+                    {% elif message.tags == 'error' %}
+                        <i class="fas fa-exclamation-triangle"></i>
+                    {% elif message.tags == 'success' %}
+                        <i class="fas fa-check-square"></i>
+                    {% endif %}
+                    {{ message.message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="base_header_container">
         <div class="base_first_container">
             <a href="{% url 'index' %}"><span class="base_logo">KHUtack Overflow</span></a>

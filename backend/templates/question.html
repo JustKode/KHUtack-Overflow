@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+{% load martortags %}
+
+{% block head %}
+    <title>{{ question.title }} - KHUtack Overflow</title>
+    <link rel="stylesheet" href="/static/css/question.css">
+    <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <script type="text/javascript" src="{% static 'js/question.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="main_container">
+        <div class="sub_container">
+            <div class="question_top_container">
+                <div class="question_top_first">
+                    <span class="category">{{ question.category }}{% if question.sub_category %} - {{question.sub_category.name}}{% endif %}</span>
+                    <span class="title">
+                        {{ question.title }}
+                    </span>
+                </div>
+                <div class="question_top_second">
+                    <span class="icon_content">
+                        <i class="fas fa-calendar"></i>
+                        {{ question.published }}
+                    </span>
+                    <span class="icon_content">
+                        <i class="fas fa-user"></i>
+                        {{ question.writer }}
+                    </span>
+                </div>
+            </div>
+            <div class="question_content">
+                <div class="recommend_block">
+                    <a href="{% url 'question_up_vote' question.pk %}">
+                        <div class="recommend_block_arrow">
+                            <i class="fas fa-angle-up"></i>
+                        </div>
+                    </a>
+                    <div class="recommend_block_number">
+                        {{ question.recommend }}
+                    </div>
+                    <a href="{% url 'question_down_vote' question.pk %}">
+                        <div class="recommend_block_arrow">
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </a>
+                </div>
+                <div class="martor-preview">
+                    {{ question.content|safe_markdown }}
+                    <div class="comment_container">
+                        <div class="comment_title">
+                            <span class="comment_title_wrapper">
+                                댓글 {{ question.comments.count }}
+                            </span>
+                        </div>
+                        <div class="comment_input_container">
+                            <form action="{% url 'post_comment' question.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="comment" id="comment" placeholder="댓글을 입력해주세요."/>
+                                <input type="submit" value="작성">
+                            </form>
+                        </div>
+                        <div class="comment_list">
+                            {% for comment in question.comments.all %}
+                                <div class="comment_element">
+                                    <span class="comment_content">{{ comment.content }}</span> ―
+                                    <span class="comment_writer">{{ comment.writer }}</span>
+                                    <span class="gray">
+                                        {% if comment.writer == request.user %}
+                                            <span class="comment_menu pointer" onClick="toggle_comment({{ comment.pk }});">수정</span>
+                                            <form action="{% url 'delete_comment' question.pk comment.pk %}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" class="delete">
+                                                {% csrf_token %}
+                                                <input type="submit" value="삭제" class="pointer">
+                                            </form>
+                                            <form action="{% url 'put_comment' question.pk comment.pk %}" method="post" id="{{ comment.pk }}" style="display: none;">
+                                                {% csrf_token %}
+                                                <input type="text" name="content" value="{{ comment.content }}">
+                                                <input type="submit" value="수정">
+                                            </form>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            {% endfor%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment_container">
+                <div class="comment_title">
+                    <span class="comment_title_wrapper">
+                        답변 {{ question.answers.all.count }}
+                    </span>
+                </div>
+            </div>
+            {% for answer in question.answers.all %}
+            <div class="question_content">
+                <div class="recommend_block">
+                    <a href="{% url 'question_up_vote' question.pk %}">
+                        <div class="recommend_block_arrow">
+                            <i class="fas fa-angle-up"></i>
+                        </div>
+                    </a>
+                    <div class="recommend_block_number">
+                        {{ answer.recommend }}
+                    </div>
+                    <a href="{% url 'question_down_vote' question.pk %}">
+                        <div class="recommend_block_arrow">
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </a>
+                </div>
+                <div class="martor-preview">
+                    {{ answer.content|safe_markdown }}
+                    <div class="comment_container">
+                        <div class="comment_title">
+                            <span class="comment_title_wrapper">
+                                댓글 {{ answer.comments.count }}
+                            </span>
+                        </div>
+                        <div class="comment_input_container">
+                            <form action="{% url 'post_comment' question.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="comment" id="comment" placeholder="댓글을 입력해주세요."/>
+                                <input type="submit" value="작성">
+                            </form>
+                        </div>
+                        <div class="comment_list">
+                            {% for comment in answer.comments.all %}
+                                <div class="comment_element">
+                                    <span class="comment_content">{{ comment.content }}</span> ―
+                                    <span class="comment_writer">{{ comment.writer }}</span>
+                                    <span class="gray">
+                                        {% if comment.writer == request.user %}
+                                            <span class="comment_menu pointer" onClick="toggle_comment({{ comment.pk }});">수정</span>
+                                            <form action="{% url 'delete_comment' question.pk comment.pk %}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" class="delete">
+                                                {% csrf_token %}
+                                                <input type="submit" value="삭제" class="pointer">
+                                            </form>
+                                            <form action="{% url 'put_comment' question.pk comment.pk %}" method="post" id="{{ comment.pk }}" style="display: none;">
+                                                {% csrf_token %}
+                                                <input type="text" name="content" value="{{ comment.content }}">
+                                                <input type="submit" value="수정">
+                                            </form>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            {% endfor%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="padding_side">
+                {% if question.answers.all.count == 0 %}
+                    <div class="answer_please">
+                        지금 첫 답변을 작성 해 주세요!
+                    </div>
+                {% endif %}
+                <form action="{% url 'post_answer' question.pk %}" method="post">
+                    {% csrf_token %}
+                    {{ form.content }}
+                    <div class="center_text">
+                        <input type="submit" value="답변 제출" class="big_button">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/typo.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/spellcheck.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}"></script>
+    <script>
+        $('.martor-preview pre').each(function(i, block){
+            hljs.highlightBlock(block);
+        });
+    </script>
+{% endblock %}

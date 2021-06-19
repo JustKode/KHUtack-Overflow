@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from user.models import User
 from board.models import Category, SubCategory
 from martor.models import MartorField
@@ -17,7 +18,15 @@ class Comment(models.Model):
         on_delete=models.SET_NULL
     )
     content = models.TextField()
-    published = models.DateTimeField(auto_now_add=True)
+    published = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        if not self.published:
+            self.published = timezone.now()
+        return super(Comment, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return str(self.writer) + ": " + self.content
 
 
 class Answer(models.Model):
@@ -27,8 +36,18 @@ class Answer(models.Model):
         on_delete=models.SET_NULL
     )
     content = MartorField()
-    published = models.DateTimeField(auto_now_add=True)
+    published = models.DateTimeField()
     recommend = models.IntegerField(default=0)
+    recommended_person = models.ManyToManyField(User, blank=True, related_name='answer_recommanded_person')
+    comments = models.ManyToManyField(Comment, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.published:
+            self.published = timezone.now()
+        return super(Answer, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return str(self.writer) + ": " + self.content
 
 
 class Question(models.Model):
@@ -47,6 +66,7 @@ class Question(models.Model):
     )
     published = models.DateTimeField(auto_now_add=True)
     recommend = models.IntegerField(default=0)
+    recommended_person = models.ManyToManyField(User, blank=True, related_name='question_recommanded_person')
     tags = models.ManyToManyField(Tag, blank=True)
     comments = models.ManyToManyField(Comment, blank=True)
     answers = models.ManyToManyField(Answer, blank=True)

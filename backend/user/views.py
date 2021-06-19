@@ -1,7 +1,7 @@
 from user.models import User
 from django.db.models.base import ModelState
 from django.shortcuts import redirect, render
-from django.contrib import auth
+from django.contrib import auth, messages
 
 
 def signup(request):
@@ -18,40 +18,33 @@ def signup(request):
         homepage = request.POST.get('homepage')
 
         # 입력 폼 점검
-        message = ''
         if phone == '':
-            message = "전화번호를 입력해 주세요."
-        
-        if email == '':
-            message = "이메일을 입력해 주세요."
-        
-        if birth == '':
-            message = "생일을 입력해 주세요."
-        
-        if student_id == '':
-            message = "학번을 입력해 주세요."
+            messages.error(request, "전화번호를 입력 해 주세요.")
+        elif email == '':
+            messages.error(request, "이메일을 입력해 주세요.")
+        elif birth == '':
+            messages.error(request, "생일을 입력해 주세요.")
+        elif student_id == '':
+            messages.error(request, "학번을 입력해 주세요.")
         elif not len(student_id) == 10:
-            message = "올바른 학번을 입력해 주세요."
-        
-        if name == '':
-            message = "이름을 입력해 주세요."
+            messages.error(request, "올바른 학번을 입력해 주세요.")
+        elif name == '':
+            messages.error(request, "이름을 입력해 주세요.")
         elif not len(name) <= 20:
-            message = "이름이 너무 깁니다."
-        
-        if password == '':
-            message = "비밀번호를 입력 해 주세요."
+            messages.error(request, "이름이 너무 깁니다.")
+        elif password == '':
+            messages.error(request, "비밀번호를 입력 해 주세요.")
         elif not 6 <= len(password) <= 20:
-            message = "올바른 비밀번호 길이를 입력 해 주세요."
+            messages.error(request, "올바른 비밀번호 길이를 입력 해 주세요.")
         elif password != password_2:
-            message = "비밀번호와 비밀번호 확인이 일치하지 않습니다."
-        
-        if user_id == '':
-            message = "아이디를 입력 해 주세요."
+            messages.error(request, "비밀번호와 비밀번호 확인이 일치하지 않습니다.")
+        elif user_id == '':
+            messages.error(request, "아이디를 입력 해 주세요.")
         elif not 5 <= len(user_id) <= 20:
-            message = "올바른 아이디 길이를 입력 해 주세요."
+            messages.error(request, "올바른 아이디 길이를 입력 해 주세요.")
         
-        if message != '':
-            return render(request, 'signup.html', {'message': message})
+        if len(messages.get_messages(request)) != 0:
+            return render(request, 'signup.html', {'message': '정보를 입력 해 주세요.'})
         
         if github == '':
             github = 'null'
@@ -70,6 +63,7 @@ def signup(request):
             homepage=homepage
         )
         auth.login(request, user)
+        messages.success(request, "성공적으로 회원 가입이 완료 되었습니다.")
         return redirect('index')
     else:
         if request.user.is_authenticated:
@@ -81,9 +75,9 @@ def login(request):
         user_id = request.POST.get('user_id')
         password = request.POST.get('password')
 
-        if user_id is '':
+        if user_id == '':
             return render(request, 'login.html', {'message': "아이디를 입력 해 주세요."})
-        elif password is '':
+        elif password == '':
             return render(request, 'login.html', {'message': "비밀번호를 입력 해 주세요."})
 
         user = auth.authenticate(request, user_id=user_id, password=password)

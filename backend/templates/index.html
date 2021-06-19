@@ -3,7 +3,7 @@
 {% block head %}
     <title>KHUtack Overflow</title>
     <link rel="stylesheet" href="/static/css/index.css">
-{% endblock%}
+{% endblock %}
 
 {% block content %}
     <div class="main_container">
@@ -20,11 +20,11 @@
                 <span>Recent Posts</span>
             </div>
             <div class="question_list_container">
-                    {% for question in questions %}
+                {% for question in questions %}
                     <div class="question_box_container">
                         <div class="question_box_first">
                             <span class="board">{{ question.category }}</span>
-                            <span class="title">{{ question.title }}</span>
+                            <span class="title"><a href="{% url 'get_question' question.id %}">{{ question.title }}</a></span>
                         </div>
                         <div class="question_box_second">
                             <span class="icon_content">

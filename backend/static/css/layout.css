@@ -1,3 +1,50 @@
+@keyframes fade-in-out {
+    0% {
+        opacity: 0%;
+    } 25% {
+        opacity: 100%;
+    } 75% {
+        opacity: 100%;
+    } 100% {
+        opacity: 0%;
+    }
+}
+
+div.background_green {
+    background-color: #96ffa1 !important;
+    border: 1px solid #5cb85c !important;
+}
+
+div.background_red {
+    background-color: #f6dfeb !important;
+    border: 1px solid #e4bad4 !important;
+}
+
+div.message_box {
+    display: inline-block;
+    opacity: 0;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid black;
+    z-index: 1001;
+    text-align: center;
+    height: 100px;
+    line-height: 100px;
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    font-size: 18px;
+    transform: translate(-50%, 0px);
+    animation-name: fade-in-out;
+    animation-duration: 5s;
+    animation-iteration-count: initial;
+    animation-fill-mode: backwards;
+}
+
+div.message_content {
+    padding: 0 20px;
+}
+
 div.main_container {
     width: 100%;
     padding: 20px 0;
@@ -78,4 +125,12 @@ div.banner_first {
 
 div.banner_second {
     font-size: 18px;
+}
+
+div.padding_side {
+    padding: 0 20px;
+}
+
+div.center_text {
+    text-align: center;
 }
