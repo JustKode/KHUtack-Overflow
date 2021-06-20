@@ -12,6 +12,14 @@ def get_question(request, id):
         return render(request, 'question.html', {'question': question, 'form': form})
 
 
+def post_question(request):
+    if request.method == 'POST':
+        pass
+    else:
+        form = PostForm()
+        return render(request, 'question_write.html', {'form': form})
+
+
 def question_up_vote(request, id):
     if request.method == 'GET':
         question = get_object_or_404(Question, pk=id)

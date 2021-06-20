@@ -67,9 +67,11 @@
             <div class="bottom_bar">
                 <input type="text" name="query" id="query" placeholder=""/>
                 <input type="button" value="검색" onclick="searchQuery()"/>
+                {% if request.user.is_authenticated%}
                 <div class="write_bar">
-                    <a>글쓰기</a>
+                    <a href="{% url 'question_write' %}">글쓰기</a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
