@@ -1,0 +1,20 @@
+div.message_container {
+    height: 400px;
+    text-align: center;
+}
+
+div.wrapper {
+    display: inline-block;
+    top: 50%;
+    position: relative;
+    transform: translateY(-50%);
+}
+
+div.first {
+    font-size: 18px;
+}
+
+div.second {
+    font-size: 16px;
+    font-weight: bold;
+}

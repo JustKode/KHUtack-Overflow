@@ -1,24 +1,27 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block head %}
     <title>KHUtack Overflow</title>
     <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/question_list.css">
+    <script type="text/javascript" src="{% static 'js/question_list.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <div class="main_container">
         <div class="sub_container">
-            <div class="index_banner_container"> 
-                <div class="index_banner_first">
-                    For KHU. For Software.
-                </div>
-                <div class="index_banner_second">
-                    KHUtack Overflow
-                </div>
-            </div>
             <div class="sub_title_container">
-                <span><a href="{% url 'question_list' 1 %}">Recent Posts</a></span>
+                <span>Question Page {{ page }}</span>
             </div>
+            {% if no_result is True %}
+                <div class="message_container">
+                    <div class="wrapper">
+                        <div class="first">게시글이 없습니다.</div>
+                        <div class="second">첫 게시글을 작성 해 주세요!</div>
+                    </div>
+                </div>
+            {% else %}
             <div class="question_list_container">
                 {% for question in questions %}
                     <div class="question_box_container">
@@ -38,6 +41,22 @@
                         </div>
                     </div>
                 {% endfor %}
+            </div>
+            <div class="page_bottom">
+                <div class="page_list">
+                    {% for page_num in page_list %}
+                        {% if page == page_num %}
+                            <a href="{% url 'question_list' page_num %}" class="current_page">{{page_num}}</a>
+                        {% else %}
+                            <a href="{% url 'question_list' page_num %}" class="page">{{page_num}}</a>
+                        {% endif%}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="bottom_bar">
+                <input type="text" name="query" id="query" placeholder=""/>
+                <button onclick="searchQuery()">검색</button>
             </div>
         </div>
     </div>

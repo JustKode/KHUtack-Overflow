@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Login - KHUtack Overflow</title>
+    <link rel="stylesheet" href="/static/css/404.css">
+{% endblock%}
+
+{% block content %}
+    <div class="main_container">
+        <div class="sub_container">
+            <div class="error">
+                404 Error
+            </div>
+            <div class="error_message">
+                {{ message }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
