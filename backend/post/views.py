@@ -152,7 +152,7 @@ def question_list(request, page=1):
         page_list = [num for num in range(digit_ten - 9, digit_ten + 1)]
     else:
         has_next = False
-        page_list = [num for num in range(digit_ten - 9, paginator.num_pages)]
+        page_list = [num for num in range(digit_ten - 9, paginator.num_pages + 1)]
 
     if page <= 10:
         has_prev = False
@@ -162,9 +162,12 @@ def question_list(request, page=1):
 
     return render(request, 'question_list.html', {
         'questions': paginator.get_page(page),
+        'query': query,
         'page': page,
         'has_next': has_next,
         'has_prev': has_prev,
+        'prev': page_list[0] - 1,
+        'next': page_list[-1] + 1,
         'page_list': page_list,
         'no_result': no_result
     })

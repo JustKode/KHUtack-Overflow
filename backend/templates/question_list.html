@@ -44,6 +44,11 @@
             </div>
             <div class="page_bottom">
                 <div class="page_list">
+                    {% if has_prev %}
+                        <a href="{% url 'question_list' prev %}{% if query != None %}?query={{query}}{% endif %}">
+                            <i class="fas fa-caret-left buttor_left"></i>
+                        </a>
+                    {% endif %}
                     {% for page_num in page_list %}
                         {% if page == page_num %}
                             <a href="{% url 'question_list' page_num %}" class="current_page">{{page_num}}</a>
@@ -51,12 +56,20 @@
                             <a href="{% url 'question_list' page_num %}" class="page">{{page_num}}</a>
                         {% endif%}
                     {% endfor %}
+                    {% if has_next %}
+                        <a href="{% url 'question_list' next %}{% if query != None %}?query={{query}}{% endif %}">
+                            <i class="fas fa-caret-right button_right"></i>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
             {% endif %}
             <div class="bottom_bar">
                 <input type="text" name="query" id="query" placeholder=""/>
-                <button onclick="searchQuery()">검색</button>
+                <input type="button" value="검색" onclick="searchQuery()"/>
+                <div class="write_bar">
+                    <a>글쓰기</a>
+                </div>
             </div>
         </div>
     </div>
