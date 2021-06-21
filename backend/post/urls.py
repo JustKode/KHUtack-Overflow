@@ -12,5 +12,9 @@ urlpatterns = [
     path('question/list/<int:page>', question_list, name='question_list'),
     path('question/write/', post_question, name='post_question'),
     path('question/<int:id>/delete/', delete_question, name='delete_question'),
-    path('question/<int:id>/modify/', put_question, name='put_question')
+    path('question/<int:id>/modify/', put_question, name='put_question'),
+    path('question/<int:id>/answer/delete/', delete_answer, name='delete_answer'),
+    path('question/<int:id>/answer/modify/', put_answer, name='put_answer'),
+    path('question/<int:id>/answer/up_vote/', answer_up_vote, name='answer_up_vote'),
+    path('question/<int:id>/answer/down_vote/', answer_down_vote, name='answer_down_vote'),
 ]

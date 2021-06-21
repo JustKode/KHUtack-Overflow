@@ -89,6 +89,10 @@
                 </div>
             </div>
             <div class="question_bottom">
+                <div class="writer">
+                    <div class="writer_name"><i class="fas fa-user"></i>작성자: {{ question.writer }}</div>
+                    <div class="writer_info"><i class="fas fa-star"></i>{{question.writer.points}} points</div>
+                </div>
                 <div>
                     태그: 
                     {% for tag in tags %}
@@ -112,7 +116,7 @@
             {% for answer in question.answers.all %}
             <div class="question_content">
                 <div class="recommend_block">
-                    <a href="{% url 'question_up_vote' question.pk %}">
+                    <a href="{% url 'answer_up_vote' answer.pk %}">
                         <div class="recommend_block_arrow">
                             <i class="fas fa-angle-up"></i>
                         </div>
@@ -120,7 +124,7 @@
                     <div class="recommend_block_number">
                         {{ answer.recommend }}
                     </div>
-                    <a href="{% url 'question_down_vote' question.pk %}">
+                    <a href="{% url 'answer_down_vote' answer.pk %}">
                         <div class="recommend_block_arrow">
                             <i class="fas fa-angle-down"></i>
                         </div>
@@ -161,13 +165,23 @@
                                         {% endif %}
                                     </span>
                                 </div>
-                            {% endfor%}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="writer">
+                <div class="writer_name"><i class="fas fa-user"></i>작성자: {{ answer.writer }}</div>
+                <div class="writer_info"><i class="fas fa-star"></i>{{answer.writer.points}} points</div>
+            </div>
+            <div class="control">
+                {% if answer.writer == request.user %}
+                    <a href="{% url 'put_answer' answer.id %}">수정</a>
+                    <a onclick="if (confirm('정말 삭제하시겠습니까?')) window.location.href = '{% url 'delete_answer' answer.id %}';">삭제</a>
+                {% endif %}
+            </div>
             {% endfor %}
-            <div class="padding_side">
+            <div class="padding_side top-margin">
                 {% if question.answers.all.count == 0 %}
                     <div class="answer_please">
                         지금 첫 답변을 작성 해 주세요!

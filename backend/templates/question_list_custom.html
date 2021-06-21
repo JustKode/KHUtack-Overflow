@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+    <title>{{title}} Page {{page}} - KHUtack Overflow</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/question_list.css">
+    <script type="text/javascript" src="{% static 'js/question_list.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="main_container">
+        <div class="sub_container">
+            <div class="sub_title_container">
+                <span>{{title}} Page {{page}}</span>
+            </div>
+            {% if no_result is True %}
+                <div class="message_container">
+                    <div class="wrapper">
+                        <div class="first">결과가 없습니다.</div>
+                        <div class="second">게시글을 작성 해 주세요!</div>
+                    </div>
+                </div>
+            {% else %}
+            <div class="question_list_container">
+                {% for question in questions %}
+                    <div class="question_box_container">
+                        <div class="question_box_first">
+                            <span class="board">{{ question.category }}</span>
+                            <span class="title"><a href="{% url 'get_question' question.id %}">{{ question.title }}</a></span>
+                        </div>
+                        <div class="question_box_second">
+                            <span class="icon_content">
+                                <i class="fas fa-calendar"></i>
+                                {{ question.published }}
+                            </span>
+                            <span class="icon_content">
+                                <i class="fas fa-user"></i>
+                                {{ question.writer }}
+                            </span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="page_bottom">
+                <div class="page_list">
+                    {% if has_prev %}
+                        <a href="{% url 'question_list' prev %}{% if query != None %}?query={{query}}{% endif %}">
+                            <i class="fas fa-caret-left buttor_left"></i>
+                        </a>
+                    {% endif %}
+                    {% for page_num in page_list %}
+                        {% if page == page_num %}
+                            <a href="{% url 'question_list' page_num %}" class="current_page">{{page_num}}</a>
+                        {% else %}
+                            <a href="{% url 'question_list' page_num %}" class="page">{{page_num}}</a>
+                        {% endif%}
+                    {% endfor %}
+                    {% if has_next %}
+                        <a href="{% url 'question_list' next %}{% if query != None %}?query={{query}}{% endif %}">
+                            <i class="fas fa-caret-right button_right"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="bottom_bar">
+                <input type="text" name="query" id="query" placeholder=""/>
+                <input type="button" value="검색" onclick="searchQuery()"/>
+                {% if request.user.is_authenticated%}
+                <div class="write_bar">
+                    <a href="{% url 'post_question' %}">글쓰기</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

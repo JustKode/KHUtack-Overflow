@@ -24,6 +24,18 @@ function formSubmit() {
     }
 }
 
+function form_answer() {
+    var title = document.getElementById('title');
+    var content = document.querySelector('textarea.ace_text-input');
+    if (title.innerText === "") {
+        alert("제목을 입력 해 주세요.");
+        return false;
+    } else if (content.innerText === "") {
+        alert("내용을 입력 해 주세요.");
+        return false;
+    }
+}
+
 function remove_self(e) {
     e.target.parentNode.parentNode.removeChild(e.target.parentNode);
 }

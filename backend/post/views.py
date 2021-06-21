@@ -143,7 +143,6 @@ def put_question(request, id):
         })
 
         
-
 def question_up_vote(request, id):
     if request.method == 'GET':
         question = get_object_or_404(Question, pk=id)
@@ -151,7 +150,9 @@ def question_up_vote(request, id):
         if request.user not in question.recommended_person.all():
             question.recommended_person.add(request.user)
             question.recommend += 1
+            question.writer.points += 1
             question.save()
+            question.writer.save()
         else:
             messages.error(request, '이미 추천 하셨습니다.')
         
@@ -170,6 +171,36 @@ def question_down_vote(request, id):
             messages.error(request, '이미 추천 하셨습니다.')
         
         return redirect('get_question', id=id)
+
+
+def answer_up_vote(request, id):
+    if request.method == 'GET':
+        answer = get_object_or_404(Answer, pk=id)
+
+        if request.user not in answer.recommended_person.all():
+            answer.recommended_person.add(request.user)
+            answer.recommend += 1
+            answer.writer.points += 1
+            answer.save()
+            answer.writer.save()
+        else:
+            messages.error(request, '이미 추천 하셨습니다.')
+        
+        return redirect('get_question', id=Question.objects.get(answers=answer).id)
+
+
+def answer_down_vote(request, id):
+    if request.method == 'GET':
+        answer = get_object_or_404(Answer, pk=id)
+
+        if request.user not in answer.recommended_person.all():
+            answer.recommended_person.add(request.user)
+            answer.recommend -= 1
+            answer.save()
+        else:
+            messages.error(request, '이미 추천 하셨습니다.')
+        
+        return redirect('get_question', id=Question.objects.get(answers=answer).id)
 
 
 def post_comment(request, id):
@@ -259,6 +290,43 @@ def post_answer(request, post_id):
     else:
         messages.error(request, '잘못 된 접근 입니다.')
         return redirect('get_questsion', id=post_id)
+
+
+def put_answer(request, id):
+    answer = get_object_or_404(Answer, pk=id)
+    if answer.writer != request.user:
+        messages.error(request, "본인 글만 수정 할 수 있습니다.")
+        return redirect('get_question', Question.objects.get(answers=answer).id)
+
+    if request.method == 'POST':
+        body = request.POST
+        if body.get('content', None) == None:
+            messages.error(request, "내용을 입력 해 주세요.")
+            return redirect('post_question')
+
+        answer.content = body['content']
+        answer.save()
+        messages.success(request, "정보 수정에 성공하였습니다!")
+        return redirect('get_question', Question.objects.get(answers=answer).id)
+    else:
+        form = PostForm()
+        return render(request, 'answer_modify.html', {
+            'form': form,
+            'id': id,
+            'content': answer.content
+        })
+
+
+def delete_answer(request, id):
+    answer = get_object_or_404(Answer, pk=id)
+    if answer.writer != request.user:
+        messages.error(request, "본인 글만 삭제 할 수 있습니다.")
+        return redirect('get_question', Question.objects.get(answers=answer).id)
+    else:
+        question = Question.objects.get(answers=answer)
+        answer.delete()
+        messages.success(request, "성공적으로 글을 삭제 하였습니다.")
+        return redirect('get_question', question.id)
 
 
 def question_list(request, page=1):
