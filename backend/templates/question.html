@@ -139,7 +139,7 @@
                             </span>
                         </div>
                         <div class="comment_input_container">
-                            <form action="{% url 'post_comment' question.pk %}" method="post">
+                            <form action="{% url 'post_answer_comment' answer.pk %}" method="post">
                                 {% csrf_token %}
                                 <input type="text" name="comment" id="comment" placeholder="댓글을 입력해주세요."/>
                                 <input type="submit" value="작성">

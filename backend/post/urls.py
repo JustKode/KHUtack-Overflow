@@ -17,4 +17,5 @@ urlpatterns = [
     path('question/<int:id>/answer/modify/', put_answer, name='put_answer'),
     path('question/<int:id>/answer/up_vote/', answer_up_vote, name='answer_up_vote'),
     path('question/<int:id>/answer/down_vote/', answer_down_vote, name='answer_down_vote'),
+    path('question/<int:id>/answer/comment/', post_answer_comment, name='post_answer_comment'),
 ]

@@ -269,6 +269,29 @@ def delete_comment(request, post_id, id):
         return redirect('get_question', id=post_id)
 
 
+def post_answer_comment(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    answer = get_object_or_404(Answer, pk=id)
+    if request.method == 'POST':
+        content = request.POST.get('comment')
+
+        if content == '':
+            messages.error(request, '내용을 입력 해 주세요.')
+            return redirect('get_question', id=id)
+        
+        comment = Comment(writer=request.user, content=content)
+        comment.save()
+        answer.comments.add(comment)
+
+        messages.success(request, '성공적으로 댓글을 작성 하였습니다.')
+        return redirect('get_question', id=Question.objects.get(answers=answer).id)
+    else:
+        messages.error(request, '잘못 된 접근 입니다.')
+        return redirect('get_question', id=Question.objects.get(answers=answer).id)
+
+
 def post_answer(request, post_id):
     if not request.user.is_authenticated:
         return redirect('login')
