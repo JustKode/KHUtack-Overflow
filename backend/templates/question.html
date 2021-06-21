@@ -93,6 +93,7 @@
                     <span class="comment_title_wrapper">
                         답변 {{ question.answers.all.count }}
                     </span>
+                    <a class="delete" onclick="if (confirm('정말 삭제하시겠습니까?')) window.location.href = '{% url 'delete_question' question.id %}';">삭제</a>
                 </div>
             </div>
             {% for answer in question.answers.all %}

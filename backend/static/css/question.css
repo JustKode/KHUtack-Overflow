@@ -120,3 +120,16 @@ input[type=submit].big_button {
     background-color: black;
     color: white;
 }
+
+a.delete {
+    float: right;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    background: black;
+}
+
+a.delete:hover {
+    color: white !important;
+}

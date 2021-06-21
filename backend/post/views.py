@@ -41,7 +41,7 @@ def post_question(request):
             data['sub_category'] = SubCategory.objects.get(name=body['sub_category'])
 
         question = Question.objects.create(**data)
-        for tag_name in body['tag[]']:
+        for tag_name in body.get('tag[]', []):
             try:
                 tag = Tag.objects.get(tag=tag_name)
                 question.tags.add(tag)
@@ -65,6 +65,17 @@ def post_question(request):
             }
             category_list.append(temp)
         return render(request, 'question_write.html', {'form': form, 'category_list': json.dumps(category_list)})
+
+
+def delete_question(request, id):
+    question = get_object_or_404(Question, pk=id)
+    if question.writer != request.user:
+        messages.error(request, "본인의 글만 삭제 가능합니다.")
+        return redirect('get_question', id)
+    else:
+        question.delete()
+        messages.success(request, "게시글을 삭제 하는데에 성공 하였습니다.")
+        return redirect('question_list', 1)
 
 
 def question_up_vote(request, id):
