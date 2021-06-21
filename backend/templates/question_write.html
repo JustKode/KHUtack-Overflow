@@ -3,7 +3,7 @@
 {% load martortags %}
 
 {% block head %}
-    <title>{{ question.title }} - KHUtack Overflow</title>
+    <title>Question Write - KHUtack Overflow</title>
     <link rel="stylesheet" href="/static/css/question_write.css">
     <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
     <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" />
@@ -14,11 +14,25 @@
 {% block content %}
     <div class="main_container">
         <div class="sub_container">
-            <form action="{% url 'post_question' %}" method="post">
+            <form action="{% url 'post_question' %}" method="post" onsubmit="return formSubmit()" novalidate>
                 {% csrf_token %}
+                <select id="main_category" name="main_category">
+                    
+                </select>
+                <select id="sub_category" name="sub_category">
+                    
+                </select>
+                <input type="text" name="title" id="title" placeholder="제목을 입력 해 주세요."/>
                 {{ form.content }}
+                <div class="tags">
+                    <div class="tag_list" id="tag_list"></div>
+                    <div class="tag_input">
+                        <input type="text" id="tag_input" onkeyup="enterkey();" placeholder="태그를 입력해 주세요. (Enter 키를 눌러 추가.)">
+                        <input type="text" style="display: none;" />
+                    </div>
+                </div>
                 <div class="center_text">
-                    <input type="submit" value="답변 제출" class="big_button">
+                    <input type="button" value="질문 작성" onclick="this.form.submit()" />
                 </div>
             </form>
         </div>
@@ -39,5 +53,40 @@
         $('.martor-preview pre').each(function(i, block){
             hljs.highlightBlock(block);
         });
+    </script>
+    <script>
+        var category = JSON.parse('{{ category_list|safe }}');
+        // main_category code
+        var main_category = document.getElementById('main_category');
+        
+        for (var i = 0; i < category.length; i++) {
+            var option = document.createElement('option');
+            option.value = category[i].category;
+            option.innerText = category[i].category;
+            main_category.append(option);
+        }
+    
+        // sub_category code
+        var sub_category = document.getElementById('sub_category');
+        var option = document.createElement('option');
+        option.value = '-';
+        option.innerText = '-';
+        sub_category.append(option)
+
+        main_category.onchange = function () {
+            sub_category.length = 0;
+            var selected = main_category.options[main_category.selectedIndex].innerText;
+            for (var i = 0; i < category.length; i++) {
+                if (category[i].category === selected) {
+                    for (var j = 0; j < category[i].sub_category.length; j++) {
+                        var option = document.createElement('option');
+                        option.value = category[i].sub_category[j];
+                        option.innerText = category[i].sub_category[j];
+                        sub_category.append(option);
+                    }
+                }
+            }
+        }
+
     </script>
 {% endblock %}

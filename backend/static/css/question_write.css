@@ -1,0 +1,38 @@
+select {
+    width: 100px;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+input#title {
+    width: calc(100% - 207px);
+    font-size: 14px;
+    padding: 4px 8px;
+}
+
+input#tag_input {
+    width: 300px;
+    font-size: 14px;
+    padding: 4px 8px;
+}
+
+span.tag {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: black;
+    margin: 4px;
+    display: inline-block;
+    color: white;
+}
+
+span.tag > i {
+    margin-left: 8px;
+}
+
+input[type=button] {
+    border: 1px solid black;
+    background-color: black;
+    color: white;
+    border-radius: 6px;
+    padding: 4px 8px;
+}

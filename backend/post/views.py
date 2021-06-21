@@ -1,8 +1,10 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import EmptyPage, Paginator
-from post.models import Question, Comment, Answer
+from board.models import Category, SubCategory
+from post.models import Question, Comment, Answer, Tag
 from post.forms import PostForm
+import json
 
 
 def get_question(request, id):
@@ -13,11 +15,56 @@ def get_question(request, id):
 
 
 def post_question(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
     if request.method == 'POST':
-        pass
+        body = request.POST
+        print(body)
+        if body.get('title', None) == None:
+            messages.error(request, '제목을 입력 해 주세요.')
+            return redirect('post_question')
+        elif body.get('main_category', '-') == '-':
+            messages.error(request, "카테고리를 선택 해 주세요.")
+            return redirect('post_question')
+        elif body.get('content', None) == None:
+            messages.error(request, "내용을 입력 해 주세요.")
+            return redirect('post_question')
+        
+        data = {
+            "title": body['title'],
+            "writer": request.user,
+            "content": body['content'],
+            "category": Category.objects.get(name=body['main_category'])
+        }
+        if body.get('sub_category', '-') != '-':
+            data['sub_category'] = SubCategory.objects.get(name=body['sub_category'])
+
+        question = Question.objects.create(**data)
+        for tag_name in body['tag[]']:
+            try:
+                tag = Tag.objects.get(tag=tag_name)
+                question.tags.add(tag)
+            except Tag.DoesNotExist:
+                tag = Tag.objects.create(tag=tag_name)
+                tag.save()
+                question.tags.add(tag)
+
+        question.save()
+        messages.success(request, '성공적으로 답변을 작성하였습니다.')
+        return redirect('get_question', id=question.id)
     else:
         form = PostForm()
-        return render(request, 'question_write.html', {'form': form})
+        category_list = [{"category": "-", "sub_category": ["-"]}]
+        categories = Category.objects.all()
+        for category in categories:
+            sub_category = SubCategory.objects.filter(parent=category)
+            temp = {
+                "category": category.name,
+                "sub_category": ['-'] + [e.name for e in sub_category]
+            }
+            category_list.append(temp)
+        return render(request, 'question_write.html', {'form': form, 'category_list': json.dumps(category_list)})
 
 
 def question_up_vote(request, id):
