@@ -11,7 +11,7 @@ def get_question(request, id):
     if request.method == 'GET':
         question = get_object_or_404(Question, pk=id)
         form = PostForm()
-        return render(request, 'question.html', {'question': question, 'form': form})
+        return render(request, 'question.html', {'question': question, 'form': form, 'tags': question.tags.all()})
 
 
 def post_question(request):
@@ -20,7 +20,6 @@ def post_question(request):
     
     if request.method == 'POST':
         body = request.POST
-        print(body)
         if body.get('title', None) == None:
             messages.error(request, '제목을 입력 해 주세요.')
             return redirect('post_question')
@@ -41,7 +40,7 @@ def post_question(request):
             data['sub_category'] = SubCategory.objects.get(name=body['sub_category'])
 
         question = Question.objects.create(**data)
-        for tag_name in body.get('tag[]', []):
+        for tag_name in body.getlist('tag[]'):
             try:
                 tag = Tag.objects.get(tag=tag_name)
                 question.tags.add(tag)
@@ -77,6 +76,73 @@ def delete_question(request, id):
         messages.success(request, "게시글을 삭제 하는데에 성공 하였습니다.")
         return redirect('question_list', 1)
 
+
+def put_question(request, id):
+    question = get_object_or_404(Question, pk=id)
+    if question.writer != request.user:
+        messages.error(request, "본인의 글만 수정 가능합니다.")
+        return redirect('get_question', id)
+    
+    if request.method == 'POST':
+        body = request.POST
+        if body.get('title', None) == None:
+            messages.error(request, '제목을 입력 해 주세요.')
+            return redirect('post_question')
+        elif body.get('main_category', '-') == '-':
+            messages.error(request, "카테고리를 선택 해 주세요.")
+            return redirect('post_question')
+        elif body.get('content', None) == None:
+            messages.error(request, "내용을 입력 해 주세요.")
+            return redirect('post_question')
+
+        question.title = body['title']
+        question.content = body['content']
+        question.category = Category.objects.get(name=body['main_category'])
+        if body.get('sub_category', '-') != '-':
+            question.sub_category = SubCategory.objects.get(name=body['sub_category'])
+        question.tags.clear()
+
+        for tag_name in body.getlist('tag[]'):
+            try:
+                tag = Tag.objects.get(tag=tag_name)
+                question.tags.add(tag)
+            except Tag.DoesNotExist:
+                tag = Tag.objects.create(tag=tag_name)
+                tag.save()
+                question.tags.add(tag)
+
+        question.save()
+        messages.success(request, "정보 수정에 성공하였습니다!")
+        return redirect('get_question', id=question.id)
+    else:
+        form = PostForm()
+        category_list = [{"category": "-", "sub_category": ["-"]}]
+        categories = Category.objects.all()
+        for category in categories:
+            sub_category = SubCategory.objects.filter(parent=category)
+            temp = {
+                "category": category.name,
+                "sub_category": ['-'] + [e.name for e in sub_category]
+            }
+            category_list.append(temp)
+
+        if question.sub_category == None:
+            sub_category = '-'
+        else:
+            sub_category = question.sub_category.name
+        
+        return render(request, 'question_modify.html', {
+            'form': form,
+            'id': id,
+            'category_list': json.dumps(category_list),
+            'title': question.title,
+            'content': question.content,
+            'tags': question.tags.all(),
+            'main_category': question.category.name,
+            'sub_category': sub_category
+        })
+
+        
 
 def question_up_vote(request, id):
     if request.method == 'GET':

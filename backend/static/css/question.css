@@ -121,15 +121,39 @@ input[type=submit].big_button {
     color: white;
 }
 
-a.delete {
-    float: right;
+a.tag {
+    margin: 0 4px;
     padding: 4px 8px;
     border-radius: 8px;
-    color: white;
+    color: white !important;
     font-size: 14px;
     background: black;
 }
 
-a.delete:hover {
+a.tag:hover {
+    margin: 0 4px;
+    padding: 4px 8px;
+    border-radius: 8px;
     color: white !important;
+    font-size: 14px;
+    background: black;
+    cursor: pointer;
+}
+
+div.control {
+    text-align: right;
+}
+
+div.control > a {
+    margin: 0 4px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: white !important;
+    font-size: 14px;
+    background: black;
+}
+
+div.control > a:hover {
+    color: white !important;
+    cursor: pointer;
 }

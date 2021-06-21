@@ -88,12 +88,25 @@
                     </div>
                 </div>
             </div>
+            <div class="question_bottom">
+                <div>
+                    태그: 
+                    {% for tag in tags %}
+                        <a class="tag">{{ tag.tag }}</a>
+                    {% endfor %}
+                </div>
+                <div class="control">
+                    {% if question.writer == request.user %}
+                        <a href="{% url 'put_question' question.id %}">수정</a>
+                        <a onclick="if (confirm('정말 삭제하시겠습니까?')) window.location.href = '{% url 'delete_question' question.id %}';">삭제</a>
+                    {% endif %}
+                </div>    
+            </div>
             <div class="comment_container">
                 <div class="comment_title">
                     <span class="comment_title_wrapper">
                         답변 {{ question.answers.all.count }}
                     </span>
-                    <a class="delete" onclick="if (confirm('정말 삭제하시겠습니까?')) window.location.href = '{% url 'delete_question' question.id %}';">삭제</a>
                 </div>
             </div>
             {% for answer in question.answers.all %}
