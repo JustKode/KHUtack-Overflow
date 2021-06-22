@@ -8,9 +8,9 @@ def category_list(request, category, page=1):
     category = get_object_or_404(Category, url=category)
     query = request.GET.get('query', None)
     if query == None:
-        question_list = Question.objects.filter(category=category)
+        question_list = Question.objects.filter(category=category).order_by('-published')
     else:
-        question_list = Question.objects.filter(title__contains=query, category=category) | Question.objects.filter(content__contains=query, category=category) 
+        question_list = (Question.objects.filter(title__contains=query, category=category) | Question.objects.filter(content__contains=query, category=category)).order_by('-published')
     paginator = Paginator(question_list, 10)
     no_result = False
     
@@ -65,9 +65,9 @@ def sub_category_list(request, sub_category, page=1):
     sub_category = get_object_or_404(SubCategory, url=sub_category)
     query = request.GET.get('query', None)
     if query == None:
-        question_list = Question.objects.filter(sub_category=sub_category)
+        question_list = Question.objects.filter(sub_category=sub_category).order_by('-published')
     else:
-        question_list = Question.objects.filter(title__contains=query, sub_category=sub_category) | Question.objects.filter(content__contains=query, sub_category=sub_category) 
+        question_list = (Question.objects.filter(title__contains=query, sub_category=sub_category) | Question.objects.filter(content__contains=query, sub_category=sub_category)).order_by('-published')
     paginator = Paginator(question_list, 10)
     no_result = False
     
@@ -123,9 +123,9 @@ def tag_list(request, tag, page=1):
     tag = get_object_or_404(Tag, tag=tag)
     query = request.GET.get('query', None)
     if query == None:
-        question_list = Question.objects.filter(tags=tag)
+        question_list = Question.objects.filter(tags=tag).order_by('-published')
     else:
-        question_list = Question.objects.filter(title__contains=query, tags=tag) | Question.objects.filter(content__contains=query, tags=tag) 
+        question_list = (Question.objects.filter(title__contains=query, tags=tag) | Question.objects.filter(content__contains=query, tags=tag)).order_by('-published')
     paginator = Paginator(question_list, 10)
     no_result = False
     

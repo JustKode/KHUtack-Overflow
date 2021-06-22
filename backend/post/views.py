@@ -355,9 +355,9 @@ def delete_answer(request, id):
 def question_list(request, page=1):
     query = request.GET.get('query', None)
     if query == None:
-        question_list = Question.objects.all()
+        question_list = Question.objects.all().order_by('-published')
     else:
-        question_list = Question.objects.filter(title__contains=query) | Question.objects.filter(content__contains=query)
+        question_list = (Question.objects.filter(title__contains=query) | Question.objects.filter(content__contains=query)).order_by('-published')
     paginator = Paginator(question_list, 10)
     no_result = False
     
