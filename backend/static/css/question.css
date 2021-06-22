@@ -181,3 +181,7 @@ span.category > a {
 span.category > a:hover {
     color: white !important;
 }
+
+div.writer_info > a > i {
+    color: #888888 !important;
+}

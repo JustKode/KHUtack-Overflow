@@ -91,10 +91,18 @@
             <div class="question_bottom">
                 <div class="writer">
                     <div class="writer_name"><i class="fas fa-user"></i>작성자: {{ question.writer }}</div>
-                    <div class="writer_info"><i class="fas fa-star"></i>{{question.writer.points}} points</div>
+                    <div class="writer_info">
+                        <i class="fas fa-star"></i>
+                        {{question.writer.points}} points
+                    </div>
+                    <div class="writer_info">
+                        {% if question.writer.github != 'null' %}<a href="https://github.com/{{question.writer.github}}"><i class="fab fa-github"></i></a>{% endif %}
+                        {% if question.writer.homepage != 'null' %}<a href="{{question.writer.homepage}}"><i class="fas fa-home"></i></a>{% endif %}
+                    </div>
                 </div>
                 <div>
-                    태그: 
+                    태그:
+                    {% if not tags %}없음{% endif %}
                     {% for tag in tags %}
                         <a class="tag" href="{% url 'tag_list' tag.tag 1 %}">{{ tag.tag }}</a>
                     {% endfor %}
@@ -171,8 +179,16 @@
                 </div>
             </div>
             <div class="writer">
-                <div class="writer_name"><i class="fas fa-user"></i>작성자: {{ answer.writer }}</div>
-                <div class="writer_info"><i class="fas fa-star"></i>{{answer.writer.points}} points</div>
+                <div class="writer_name">
+                    <i class="fas fa-user"></i>작성자: {{ answer.writer }}
+                </div>
+                <div class="writer_info">
+                    <i class="fas fa-star"></i>{{answer.writer.points}} points
+                </div>
+                <div class="writer_info">
+                    {% if answer.writer.github != 'null' %}<a href="https://github.com/{{answer.writer.github}}"><i class="fab fa-github"></i></a>{% endif %}
+                    {% if answer.writer.homepage != 'null' %}<a href="{{answer.writer.homepage}}"><i class="fas fa-home"></i></a>{% endif %}
+                </div>
             </div>
             <div class="control">
                 {% if answer.writer == request.user %}
