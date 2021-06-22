@@ -32,6 +32,7 @@ div.index_banner_second {
 }
 
 span.board > a {
+    font-weight: lighter;
     color: white !important;
 }
 

@@ -126,6 +126,7 @@ input[type=submit].big_button {
 }
 
 a.tag {
+    font-weight: lighter;
     margin: 0 4px;
     padding: 4px 8px;
     border-radius: 8px;
@@ -170,4 +171,13 @@ div.control > a {
 div.control > a:hover {
     color: white !important;
     cursor: pointer;
+}
+
+span.category > a {
+    font-weight: lighter;
+    color: white !important;
+}
+
+span.category > a:hover {
+    color: white !important;
 }
