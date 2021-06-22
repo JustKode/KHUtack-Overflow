@@ -11,6 +11,17 @@
 {% block content %}
     <div class="main_container">
         <div class="sub_container">
+            <div class="category_container">
+                <div class="board_list"><span>Board List</span></div>
+                {% for category in category_list %}
+                <div class="category_line">
+                    <a class="main board" href="{% url 'category_list' category.category.url 1 %}">{{category.category.name}}</a>
+                    {% for sub_category in category.sub_category %}
+                    <a class="board" href="{% url 'sub_category_list' sub_category.url 1 %}">{{sub_category.name}}</a>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
             <div class="sub_title_container">
                 <span>Question Page {{ page }}</span>
             </div>
@@ -26,7 +37,7 @@
                 {% for question in questions %}
                     <div class="question_box_container">
                         <div class="question_box_first">
-                            <span class="board">{{ question.category }}</span>
+                            <span class="board"><a href="{% url 'category_list' question.category.url 1 %}">{{ question.category }}</a></span>
                             <span class="title"><a href="{% url 'get_question' question.id %}">{{ question.title }}</a></span>
                         </div>
                         <div class="question_box_second">
@@ -51,9 +62,9 @@
                     {% endif %}
                     {% for page_num in page_list %}
                         {% if page == page_num %}
-                            <a href="{% url 'question_list' page_num %}" class="current_page">{{page_num}}</a>
+                            <a href="{% url 'question_list' page_num %}{% if query != None %}?query={{query}}{% endif %}" class="current_page">{{page_num}}</a>
                         {% else %}
-                            <a href="{% url 'question_list' page_num %}" class="page">{{page_num}}</a>
+                            <a href="{% url 'question_list' page_num %}{% if query != None %}?query={{query}}{% endif %}" class="page">{{page_num}}</a>
                         {% endif%}
                     {% endfor %}
                     {% if has_next %}
@@ -65,8 +76,8 @@
             </div>
             {% endif %}
             <div class="bottom_bar">
-                <input type="text" name="query" id="query" placeholder=""/>
-                <input type="button" value="검색" onclick="searchQuery()"/>
+                <input type="text" name="query" id="query" placeholder="" value="{% if query != None %}{{query}}{% endif %}"/>
+                <input type="button" value="검색" onclick="searchQuery('/post/question/list')"/>
                 {% if request.user.is_authenticated%}
                 <div class="write_bar">
                     <a href="{% url 'post_question' %}">글쓰기</a>

@@ -16,7 +16,7 @@
         <div class="sub_container">
             <div class="question_top_container">
                 <div class="question_top_first">
-                    <span class="category">{{ question.category }}{% if question.sub_category %} - {{question.sub_category.name}}{% endif %}</span>
+                    <span class="category"><a href="{% url 'category_list' question.category.url 1 %}">{{ question.category }}</a>{% if question.sub_category %} - <a href="{% url 'sub_category_list' question.sub_category.url 1 %}">{{question.sub_category.name}}</a>{% endif %}</span>
                     <span class="title">
                         {{ question.title }}
                     </span>
@@ -96,7 +96,7 @@
                 <div>
                     태그: 
                     {% for tag in tags %}
-                        <a class="tag">{{ tag.tag }}</a>
+                        <a class="tag" href="{% url 'tag_list' tag.tag 1 %}">{{ tag.tag }}</a>
                     {% endfor %}
                 </div>
                 <div class="control">

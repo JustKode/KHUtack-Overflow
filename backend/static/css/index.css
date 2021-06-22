@@ -30,3 +30,11 @@ div.index_banner_second {
     animation-iteration-count: initial;
     animation-fill-mode: backwards; 
 }
+
+span.board > a {
+    color: white !important;
+}
+
+span.board > a:hover {
+    color: white !important;
+}

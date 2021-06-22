@@ -23,7 +23,7 @@
                 {% for question in questions %}
                     <div class="question_box_container">
                         <div class="question_box_first">
-                            <span class="board">{{ question.category }}</span>
+                            <span class="board"><a href="{% url 'category_list' question.category.url 1 %}">{{ question.category }}</a></span>
                             <span class="title"><a href="{% url 'get_question' question.id %}">{{ question.title }}</a></span>
                         </div>
                         <div class="question_box_second">

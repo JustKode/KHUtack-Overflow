@@ -66,3 +66,41 @@ div.write_bar > a {
     border: none;
     border-radius: 4px;
 }
+
+div.category_container {
+    margin: 16px 0;
+}
+
+div.category_line {
+    margin: 12px 0;
+    padding: 0px 20px;
+}
+
+div.board_list {
+    margin: 20px;
+}
+
+div.board_list > span {
+    padding: 4px 8px;
+    font-size: 24px;
+    font-weight: lighter;
+    border-bottom: 2px solid black;
+}
+
+a.board {
+    background-color: #444444;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+a.board:hover {
+    color: white !important;
+}
+
+a.main {
+    background-color: black;
+}

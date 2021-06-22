@@ -357,7 +357,7 @@ def question_list(request, page=1):
     if query == None:
         question_list = Question.objects.all()
     else:
-        question_list = Question.objects.filter(title__contains=query)
+        question_list = Question.objects.filter(title__contains=query) | Question.objects.filter(content__contains=query)
     paginator = Paginator(question_list, 10)
     no_result = False
     
@@ -382,8 +382,20 @@ def question_list(request, page=1):
     else:
         has_prev = True
 
+    # category
+    category_list = []
+    categories = Category.objects.all()
+    for category in categories:
+        sub_category = SubCategory.objects.filter(parent=category)
+        temp = {
+            "category": category,
+            "sub_category": sub_category
+        }
+        category_list.append(temp)
+
 
     return render(request, 'question_list.html', {
+        'category_list': category_list,
         'questions': paginator.get_page(page),
         'query': query,
         'page': page,
